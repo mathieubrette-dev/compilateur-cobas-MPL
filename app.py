@@ -776,10 +776,7 @@ if st.session_state.etape >= 2:
                 st.session_state.user_mapping[c_test] = default_match
 
         def update_mapping(test_name):
-            # la clé du widget peut avoir disparu (fichier retiré, extraction relancée) : ne pas planter
-            cle = f"widget_{test_name}"
-            if cle in st.session_state and "user_mapping" in st.session_state:
-                st.session_state.user_mapping[test_name] = st.session_state[cle]
+            st.session_state.user_mapping[test_name] = st.session_state[f"widget_{test_name}"]
 
         # ===== Avancement des tests : tous les ACN du CSV driver (case 2) sont à tester =====
         afficher_avancement(df_driver, col_acn_driver, acn_to_mpl, code_to_rows, df_cobas, df_mpl,
