@@ -622,6 +622,34 @@ def process_files(uploaded_files, csv_bytes=None, csv_mpl_trans_bytes=None):
     df_nr = pd.DataFrame(lignes_non_reconnues, columns=["Fichier", "Page", "Ligne"])
     return df_c, df_m, erreurs, df_nr
 
+# --- Travail en deux temps : données gardées dans des feuilles cachées de l'Excel ---
+FEUILLE_MPL, FEUILLE_COBAS = "_donnees_mpl", "_donnees_cobas"
+COLS_MPL = ["Nom de l'analyse", "Numéro de tube", "Résulat MPL", "Unité MPL", "Libellé CR MPL", "Codes MPL possibles"]
+
+def lire_donnees_excel(data):
+    """Relit (df_cobas, df_mpl) dans les feuilles cachées d'un Excel produit par l'outil. ValueError si absentes."""
+    try:
+        xl = pd.ExcelFile(io.BytesIO(data))
+        if FEUILLE_MPL not in xl.sheet_names and FEUILLE_COBAS not in xl.sheet_names:
+            raise ValueError("feuille introuvable")
+        lire = lambda nom: (pd.read_excel(xl, sheet_name=nom, dtype=str, keep_default_na=False)
+                            if nom in xl.sheet_names else pd.DataFrame())
+        df_c, df_m = lire(FEUILLE_COBAS), lire(FEUILLE_MPL)
+    except Exception as e:
+        raise ValueError(str(e))
+    if not df_m.empty:
+        for c in COLS_MPL:
+            if c not in df_m.columns: df_m[c] = ""
+        df_m = df_m[COLS_MPL]
+    return df_c, df_m
+
+def ecrire_donnees_cachees(writer, df_cobas, df_mpl):
+    """Ajoute les feuilles cachées (données brutes extraites) au classeur en cours d'écriture."""
+    for nom, df in ((FEUILLE_MPL, df_mpl), (FEUILLE_COBAS, df_cobas)):
+        if df is None or df.empty: continue
+        df.astype(str).to_excel(writer, index=False, sheet_name=nom)
+        writer.sheets[nom].hide()
+
 # -------------------------------------------------------------------------------------
 
 def acn_valides(df_driver, col_acn):
@@ -693,8 +721,9 @@ with col_a:
     uploaded_csv = st.file_uploader(tr("up2"), type="csv")
 with col_b:
     uploaded_csv_mpl = st.file_uploader(tr("up3"), type="csv")
+uploaded_xlsx = st.file_uploader(tr("up4"), type="xlsx", key="depot_excel")
 
-if uploaded_files and uploaded_csv:
+if (uploaded_files or uploaded_xlsx) and uploaded_csv:
     if st.button(tr("extract_btn")):
         df_drv_check = read_csv_safe(uploaded_csv.getvalue())
         if colonne(df_drv_check, "Nom de l") is None or colonne(df_drv_check, "Code ACN") is None:
@@ -711,7 +740,20 @@ if uploaded_files and uploaded_csv:
 
         with st.spinner(tr("spin_extract")):
             csv_mpl_bytes = uploaded_csv_mpl.getvalue() if uploaded_csv_mpl else None
-            df_cobas, df_mpl, erreurs, df_non_reconnues = process_files(uploaded_files, uploaded_csv.getvalue(), csv_mpl_bytes)
+            df_cobas, df_mpl, erreurs, df_non_reconnues = process_files(uploaded_files or [], uploaded_csv.getvalue(), csv_mpl_bytes)
+
+            if uploaded_xlsx:
+                try:
+                    df_c_prev, df_m_prev = lire_donnees_excel(uploaded_xlsx.getvalue())
+                    st.info(tr("xlsx_loaded", m=len(df_m_prev), c=len(df_c_prev)))
+                    if not df_m_prev.empty:
+                        df_mpl = pd.concat([df_m_prev, df_mpl], ignore_index=True) if not df_mpl.empty else df_m_prev
+                        df_mpl = df_mpl.drop_duplicates(subset=["Nom de l'analyse", "Numéro de tube", "Résulat MPL"], keep="first").reset_index(drop=True)
+                    if not df_c_prev.empty:
+                        df_cobas = pd.concat([df_c_prev, df_cobas], ignore_index=True) if not df_cobas.empty else df_c_prev
+                        df_cobas = df_cobas.drop_duplicates().reset_index(drop=True)
+                except ValueError:
+                    erreurs.append(tr("e_xlsx_bad", f=uploaded_xlsx.name))
 
             if erreurs:
                 for err in erreurs:
@@ -735,10 +777,10 @@ if st.session_state.etape >= 2:
     df_mpl = st.session_state.df_mpl
     analyses_cobas = df_cobas["_cle"].dropna().unique()
 
-    if len(analyses_cobas) == 0:
+    if len(analyses_cobas) == 0 and df_mpl.empty:
         st.error(tr("err_no_cobas"))
     else:
-        st.info(tr("prefilled"))
+        st.info(tr("prefilled") if len(analyses_cobas) else tr("partial_info"))
 
         analyses_mpl = ["🔴 -- Aucune correspondance --", "❌ -- Ignorer cette analyse --"] + list(df_mpl["Nom de l'analyse"].dropna().unique())
 
@@ -782,20 +824,22 @@ if st.session_state.etape >= 2:
         afficher_avancement(df_driver, col_acn_driver, acn_to_mpl, code_to_rows, df_cobas, df_mpl,
                             analyses_cobas, premiere_ligne, st.session_state.user_mapping)
 
-        col_f1, col_f2 = st.columns([3, 1])
-        with col_f1:
-            filtre = st.radio(
-                tr("filter_label"),
-                ["all", "todo", "ok", "ign"],
-                format_func=lambda k: tr({"all": "f_all", "todo": "f_todo", "ok": "f_ok", "ign": "f_ign"}[k]),
-                horizontal=True
-            )
-        with col_f2:
-            st.markdown("<br>", unsafe_allow_html=True)
-            if st.button(tr("recalc"), use_container_width=True):
-                if "user_mapping" in st.session_state:
-                    del st.session_state["user_mapping"]
-                st.rerun()
+        filtre = "all"
+        if len(analyses_cobas):
+            col_f1, col_f2 = st.columns([3, 1])
+            with col_f1:
+                filtre = st.radio(
+                    tr("filter_label"),
+                    ["all", "todo", "ok", "ign"],
+                    format_func=lambda k: tr({"all": "f_all", "todo": "f_todo", "ok": "f_ok", "ign": "f_ign"}[k]),
+                    horizontal=True
+                )
+            with col_f2:
+                st.markdown("<br>", unsafe_allow_html=True)
+                if st.button(tr("recalc"), use_container_width=True):
+                    if "user_mapping" in st.session_state:
+                        del st.session_state["user_mapping"]
+                    st.rerun()
 
         filtered_c_tests = []
         for c_test in analyses_cobas:
@@ -809,8 +853,9 @@ if st.session_state.etape >= 2:
             elif filtre == "ign" and current_val == "❌ -- Ignorer cette analyse --":
                 filtered_c_tests.append(c_test)
 
-        st.write(tr("showing", n=len(filtered_c_tests), total=len(analyses_cobas)))
-        st.markdown("<br>", unsafe_allow_html=True)
+        if len(analyses_cobas):
+            st.write(tr("showing", n=len(filtered_c_tests), total=len(analyses_cobas)))
+            st.markdown("<br>", unsafe_allow_html=True)
 
         cols = st.columns(4)
         for i, c_test in enumerate(filtered_c_tests):
@@ -945,6 +990,8 @@ if st.session_state.etape == 3:
     st.divider()
     st.subheader(tr("step3"), anchor="etape-3")
     st.success(tr("done"))
+    if st.session_state.df_cobas is None or st.session_state.df_cobas.empty:
+        st.info(tr("partial_next"))
 
     def highlight_cells(df):
         styles = pd.DataFrame('', index=df.index, columns=df.columns)
@@ -978,6 +1025,7 @@ if st.session_state.etape == 3:
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
         styled_df.to_excel(writer, index=False, sheet_name="L3_cobaspro")
+        ecrire_donnees_cachees(writer, st.session_state.df_cobas, st.session_state.df_mpl)
     output.seek(0)
 
     col_dl, col_reset = st.columns(2)
