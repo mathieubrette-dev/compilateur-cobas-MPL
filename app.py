@@ -426,8 +426,12 @@ def process_files(uploaded_files, csv_bytes=None, csv_mpl_trans_bytes=None):
 
         # ================= LECTURE PDF =================
         if file_ext == 'pdf':
-            reader = pypdf.PdfReader(uploaded_file)
-            textes_layout = [(p.extract_text(extraction_mode="layout") or "") for p in reader.pages]
+            try:
+                reader = pypdf.PdfReader(uploaded_file)
+                textes_layout = [(p.extract_text(extraction_mode="layout") or "") for p in reader.pages]
+            except Exception as e:
+                erreurs.append(tr("e_pdf_corrupt", f=uploaded_file.name, err=f"{type(e).__name__}"))
+                continue
             if not "".join(textes_layout).strip():
                 erreurs.append(tr("e_pdf_empty", f=uploaded_file.name))
                 continue

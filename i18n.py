@@ -227,6 +227,12 @@ TR = {
     "de": "⚠️ Die PDF '{f}' enthält keinen lesbaren Text (gescanntes Dokument?). Legen Sie sie als Bild (png/jpg) ab, um die OCR zu nutzen.",
     "es": "⚠️ El PDF '{f}' no contiene texto legible (¿documento escaneado?). Proporciónelo como imagen (png/jpg) para usar el OCR.",
     "it": "⚠️ Il PDF '{f}' non contiene testo leggibile (documento scansionato?). Lo fornisca come immagine (png/jpg) per usare l'OCR."},
+"e_pdf_corrupt": {
+    "fr": "❌ Le PDF '{f}' est corrompu et ne peut pas être lu ({err}). Retire-le de la liste des fichiers (croix ✕ à droite de son nom, étape 1) puis relance l'extraction.",
+    "en": "❌ The PDF '{f}' is corrupted and cannot be read ({err}). Remove it from the file list (✕ next to its name, step 1) and run the extraction again.",
+    "de": "❌ Die PDF '{f}' ist beschädigt und kann nicht gelesen werden ({err}). Entfernen Sie sie aus der Dateiliste (✕ neben dem Namen, Schritt 1) und starten Sie die Extraktion erneut.",
+    "es": "❌ El PDF '{f}' está dañado y no se puede leer ({err}). Elimínelo de la lista de archivos (✕ junto a su nombre, paso 1) y vuelva a lanzar la extracción.",
+    "it": "❌ Il PDF '{f}' è danneggiato e non può essere letto ({err}). Lo rimuova dall'elenco dei file (✕ accanto al nome, passo 1) e riavvii l'estrazione."},
 "e_cobas_empty": {
     "fr": "⚠️ Le rapport cobas '{f}' n'a retourné aucun résultat.",
     "en": "⚠️ The Cobas report '{f}' returned no result.",

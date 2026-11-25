@@ -74,8 +74,8 @@ CSS = Template(r"""
 [data-testid="stMainBlockContainer"],.block-container{padding-top:5.6rem!important;padding-bottom:2.5rem!important}
 .stApp h1,.stApp h2,.stApp h3,.stApp h4{color:var(--rc-head)!important;scroll-margin-top:92px}
 hr{border-color:var(--rc-border)!important}
-/* Liste des fichiers masquée pour la case 1 seulement (les noms des CSV restent visibles) */
-.st-key-depot_fichiers [data-testid="stFileUploaderFileList"],.st-key-depot_fichiers [data-testid="stFileChip"]{display:none}
+/* Liste des fichiers de la case 1 : visible (croix pour retirer un fichier), défilante si longue */
+.st-key-depot_fichiers [data-testid="stFileUploaderFileList"]{max-height:260px;overflow-y:auto}
 /* bouton principal aux couleurs de la charte (identique à la pastille de version du bandeau) */
 [data-testid="stBaseButton-primary"]{background:var(--rc-primary)!important;border-color:var(--rc-primary)!important;color:var(--rc-on)!important}
 /* cartes et zones de dépôt */
