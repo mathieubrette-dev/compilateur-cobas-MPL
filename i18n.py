@@ -33,6 +33,7 @@ TR = {
 3. **Export MPL** (optionnel) : dans **MPL**, allez dans **Analyse**, puis cliquez sur **Exporter**. Déposez le CSV obtenu dans la case 3️⃣.
 4. Lancez l'extraction, vérifiez la correspondance des analyses, puis téléchargez le fichier Excel.
 5. ⚠️ **À la fin**, partagez le document **au format Google Sheet** avec le **bio responsable du plateau**.
+6. **En deux temps (optionnel)** : déposez d'abord seulement les PDF MPL + les CSV, extrayez et téléchargez l'Excel (il contient une feuille cachée qui garde les données). Plus tard, déposez les PDF Cobas **et cet Excel** dans la case 4️⃣, avec le CSV Driver Manager : tout est compilé ensemble.
 """,
     "en": """
 1. **Cobas and MPL files**: drop into box 1️⃣ the Cobas reports (PDF) and the MPL PDFs, obtained from the **patient record** by clicking the **printer** icon 🖨️.
@@ -40,6 +41,7 @@ TR = {
 3. **MPL export** (optional): in **MPL**, go to **Analysis**, then click **Export**. Drop the resulting CSV into box 3️⃣.
 4. Run the extraction, check the test matching, then download the Excel file.
 5. ⚠️ **At the end**, share the document **as a Google Sheet** with the **laboratory section's responsible biologist**.
+6. **In two steps (optional)**: first drop only the MPL PDFs + the CSVs, extract and download the Excel (it contains a hidden sheet that keeps the data). Later, drop the Cobas PDFs **and that Excel** into box 4️⃣, with the Driver Manager CSV: everything is compiled together.
 """,
     "de": """
 1. **Cobas- und MPL-Dateien**: Legen Sie in Feld 1️⃣ die Cobas-Berichte (PDF) sowie die MPL-PDFs ab, die Sie aus der **Patientenakte** über das **Drucker**-Symbol 🖨️ erhalten.
@@ -47,6 +49,7 @@ TR = {
 3. **MPL-Export** (optional): Gehen Sie in **MPL** zu **Analyse** und klicken Sie auf **Exportieren**. Legen Sie die CSV-Datei in Feld 3️⃣ ab.
 4. Starten Sie die Extraktion, prüfen Sie die Zuordnung der Analysen und laden Sie die Excel-Datei herunter.
 5. ⚠️ **Zum Schluss** teilen Sie das Dokument **als Google Sheet** mit dem **verantwortlichen Biologen des Bereichs**.
+6. **In zwei Schritten (optional)**: Legen Sie zuerst nur die MPL-PDFs + die CSV-Dateien ab, extrahieren Sie und laden Sie das Excel herunter (es enthält ein verstecktes Blatt, das die Daten speichert). Später legen Sie die Cobas-PDFs **und dieses Excel** in Feld 4️⃣ ab, zusammen mit der Driver-Manager-CSV: alles wird gemeinsam kompiliert.
 """,
     "es": """
 1. **Archivos Cobas y MPL**: deposite en la casilla 1️⃣ los informes Cobas (PDF) y los PDF de MPL, obtenidos desde el **expediente del paciente** pulsando el icono de **impresora** 🖨️.
@@ -54,6 +57,7 @@ TR = {
 3. **Exportación de MPL** (opcional): en **MPL**, vaya a **Análisis** y pulse **Exportar**. Deposite el CSV obtenido en la casilla 3️⃣.
 4. Lance la extracción, verifique la correspondencia de los análisis y descargue el archivo Excel.
 5. ⚠️ **Al final**, comparta el documento **en formato Google Sheet** con el **biólogo responsable de la sección**.
+6. **En dos tiempos (opcional)**: deposite primero solo los PDF de MPL + los CSV, extraiga y descargue el Excel (contiene una hoja oculta que conserva los datos). Más tarde, deposite los PDF de Cobas **y ese Excel** en la casilla 4️⃣, con el CSV de Driver Manager: todo se compila junto.
 """,
     "it": """
 1. **File Cobas e MPL**: carichi nella casella 1️⃣ i rapporti Cobas (PDF) e i PDF MPL, ottenuti dalla **cartella del paziente** cliccando sull'icona **stampante** 🖨️.
@@ -61,6 +65,7 @@ TR = {
 3. **Esportazione MPL** (facoltativa): in **MPL**, vada su **Analisi** e clicchi su **Esporta**. Carichi il CSV ottenuto nella casella 3️⃣.
 4. Avvii l'estrazione, verifichi la corrispondenza delle analisi, poi scarichi il file Excel.
 5. ⚠️ **Alla fine**, condivida il documento **in formato Google Sheet** con il **biologo responsabile del settore**.
+6. **In due tempi (opzionale)**: carichi prima solo i PDF MPL + i CSV, estragga e scarichi l'Excel (contiene un foglio nascosto che conserva i dati). Più tardi, carichi i PDF Cobas **e quell'Excel** nella casella 4️⃣, con il CSV di Driver Manager: tutto viene compilato insieme.
 """},
 "sidiv_info": {
     "fr": "📝 **Fiche SIDIV (optionnelle)** : tout en bas de la page, une fiche SIDIV de vérification de connexion se **pré-remplit partiellement** une fois les fichiers déposés et les données extraites (automate, version du driver, dossiers de test, cases cochées par défaut…). **Il reste des informations à saisir à la main** (LBM, intervenants, numéro de commande, versions des logiciels, remarques…) et à vérifier avant de générer le PDF. Elle n'est pas obligatoire et n'a aucun effet sur le compilateur.",
@@ -136,6 +141,36 @@ TR = {
     "fr": "Étape 2 : Correspondance des analyses", "en": "Step 2: Test matching",
     "de": "Schritt 2: Zuordnung der Analysen", "es": "Paso 2: Correspondencia de análisis",
     "it": "Passo 2: Corrispondenza delle analisi"},
+"up4": {
+    "fr": "4️⃣ Optionnel : Excel extrait précédemment (travail en deux temps)",
+    "en": "4️⃣ Optional: previously extracted Excel (two-step work)",
+    "de": "4️⃣ Optional: zuvor extrahiertes Excel (Arbeit in zwei Schritten)",
+    "es": "4️⃣ Opcional: Excel extraído anteriormente (trabajo en dos tiempos)",
+    "it": "4️⃣ Opzionale: Excel estratto in precedenza (lavoro in due tempi)"},
+"xlsx_loaded": {
+    "fr": "📎 Excel repris : {m} ligne(s) MPL et {c} ligne(s) Cobas ajoutées aux fichiers déposés.",
+    "en": "📎 Excel loaded: {m} MPL row(s) and {c} Cobas row(s) added to the dropped files.",
+    "de": "📎 Excel übernommen: {m} MPL-Zeile(n) und {c} Cobas-Zeile(n) zu den abgelegten Dateien hinzugefügt.",
+    "es": "📎 Excel recuperado: {m} fila(s) MPL y {c} fila(s) Cobas añadidas a los archivos depositados.",
+    "it": "📎 Excel ripreso: {m} riga/e MPL e {c} riga/e Cobas aggiunte ai file caricati."},
+"e_xlsx_bad": {
+    "fr": "❌ L'Excel '{f}' n'a pas été produit par cet outil (feuille cachée de données introuvable) ou est illisible. Retire-le de la case 4️⃣.",
+    "en": "❌ The Excel '{f}' was not produced by this tool (hidden data sheet not found) or is unreadable. Remove it from box 4️⃣.",
+    "de": "❌ Das Excel '{f}' wurde nicht von diesem Tool erstellt (verstecktes Datenblatt nicht gefunden) oder ist unlesbar. Entfernen Sie es aus Feld 4️⃣.",
+    "es": "❌ El Excel '{f}' no fue generado por esta herramienta (hoja oculta de datos no encontrada) o es ilegible. Retírelo de la casilla 4️⃣.",
+    "it": "❌ L'Excel '{f}' non è stato prodotto da questo strumento (foglio nascosto dei dati non trovato) o è illeggibile. Lo rimuova dalla casella 4️⃣."},
+"partial_info": {
+    "fr": "ℹ️ Aucun résultat Cobas pour l'instant : compilation avec les résultats MPL seuls. Générez le tableau, téléchargez l'Excel, puis revenez plus tard avec les PDF Cobas et cet Excel (case 4️⃣).",
+    "en": "ℹ️ No Cobas result yet: compiling with the MPL results only. Generate the table, download the Excel, then come back later with the Cobas PDFs and that Excel (box 4️⃣).",
+    "de": "ℹ️ Noch kein Cobas-Ergebnis: Kompilierung nur mit den MPL-Ergebnissen. Erstellen Sie die Tabelle, laden Sie das Excel herunter und kommen Sie später mit den Cobas-PDFs und diesem Excel (Feld 4️⃣) wieder.",
+    "es": "ℹ️ Aún no hay resultados Cobas: compilación solo con los resultados MPL. Genere la tabla, descargue el Excel y vuelva más tarde con los PDF de Cobas y ese Excel (casilla 4️⃣).",
+    "it": "ℹ️ Nessun risultato Cobas per ora: compilazione con i soli risultati MPL. Generi la tabella, scarichi l'Excel e torni più tardi con i PDF Cobas e quell'Excel (casella 4️⃣)."},
+"partial_next": {
+    "fr": "ℹ️ Fichier partiel (sans résultats Cobas). Pour le compléter : étape 1, déposez les PDF Cobas + cet Excel (case 4️⃣) + le CSV Driver Manager (case 2️⃣).",
+    "en": "ℹ️ Partial file (no Cobas results). To complete it: step 1, drop the Cobas PDFs + this Excel (box 4️⃣) + the Driver Manager CSV (box 2️⃣).",
+    "de": "ℹ️ Teildatei (ohne Cobas-Ergebnisse). Zum Vervollständigen: Schritt 1, Cobas-PDFs + dieses Excel (Feld 4️⃣) + Driver-Manager-CSV (Feld 2️⃣) ablegen.",
+    "es": "ℹ️ Archivo parcial (sin resultados Cobas). Para completarlo: paso 1, deposite los PDF de Cobas + este Excel (casilla 4️⃣) + el CSV de Driver Manager (casilla 2️⃣).",
+    "it": "ℹ️ File parziale (senza risultati Cobas). Per completarlo: passo 1, carichi i PDF Cobas + questo Excel (casella 4️⃣) + il CSV Driver Manager (casella 2️⃣)."},
 "err_no_cobas": {
     "fr": "❌ Impossible de passer à l'étape 2 : aucun rapport cobas lisible parmi les fichiers déposés dans la première case.",
     "en": "❌ Cannot go to step 2: no readable Cobas report among the files dropped in the first box.",
